@@ -5,4 +5,5 @@ x = BookScraper()
 x.get_transcript()
 
 y = CreateNetwork()
-y.read_book()
+y.create_df()
+y.characters()

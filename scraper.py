@@ -14,7 +14,6 @@ class BookScraper:
 
         if os.path.isfile("IliadTranscript.txt"):
             pass
-
         else:
             self.driver.get(URL)
             page = self.driver.find_element(By.XPATH, '//*[@id="mw-content-text"]/div')
