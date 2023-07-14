@@ -19,7 +19,7 @@ class CharacterScraper:
         characters = [re.findall('[A-Z][^A-Z]*',i.text) for i in character_page]
         temp_char_list = []
 
-        for i in characters:
+        for i in characters[3:]:
             if i not in temp_char_list:
                 temp_char_list.append(i)
 

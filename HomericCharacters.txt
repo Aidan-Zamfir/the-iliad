@@ -1,6 +1,3 @@
-Homer
-Iliad
-Odyssey
 Achilles
 Myrmidons
 Peleus
@@ -27,6 +24,7 @@ Idomeneus
 Crete
 Heracles
 Odysseus
+Odyssey
 Patroclus
 Phoenix
 Teucer
