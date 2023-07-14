@@ -1,1 +1,1 @@
-Data analysis & relationship network for the characters of Homers Iliad
+Data analysis & relationship network for the characters of Homer's Iliad
