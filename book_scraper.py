@@ -14,6 +14,6 @@ class BookScraper:
         page = self.driver.find_element(By.XPATH, '//*[@id="mw-content-text"]/div')
         iliad = page.find_elements(By.TAG_NAME, 'p')
 
-        with open("IliadTranscript.txt", "w") as f:
+        with open("text_files/IliadTranscript.txt", "w") as f:
             for i in iliad[4:]:
                 f.write(f"{i.text}\n")

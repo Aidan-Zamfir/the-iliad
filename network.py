@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
 from pathlib import Path
 import networkx as nx
+from pyvis.network import Network
+import community as community_louvian
 import pandas as pd
 import numpy as np
 import spacy
@@ -11,7 +13,7 @@ class CreateNetwork:
 
 
     def __init__(self):
-        self.book = open("IliadTranscript.txt").read()
+        self.book = open("text_files/IliadTranscript.txt").read()
         self.doc = NER(self.book)
         self.window_size = 5
         self.run()
@@ -19,7 +21,7 @@ class CreateNetwork:
     def create_df(self):
         """Create dataframe with sentence and NER characters column"""
 
-        with open("HomericCharacters.txt") as f:
+        with open("text_files/HomericCharacters.txt") as f:
             characters = f.read()
 
         sentence_entity_list = []
@@ -34,8 +36,6 @@ class CreateNetwork:
 
         sentence_ent_df['character'] = sentence_ent_df['character'].apply(lambda x: self.filter_names(x, characters))
         self.sentence_dataframe = sentence_ent_df[sentence_ent_df['character'].map(len) > 0]
-
-        # print(self.sentence_dataframe)
 
 
     def filter_names(self, ent_list, chars):
@@ -74,14 +74,27 @@ class CreateNetwork:
         self.iliad_dataframe = self.iliad_dataframe.groupby(['source', 'target'], sort=False, as_index=False).sum()
 
     def network_graph(self):
-        """Create a network from df"""
+        """Create a network from df based on degree centrality"""
 
-        G = nx.from_pandas_edgelist(self.iliad_dataframe, source='source',
-                                    target='target', edge_attr='value', create_using=nx.Graph())
+        self.net = Network(notebook=True, width='1000px', height='700px', bgcolor='#222222', font_color='white')
+        self.net.repulsion()
+        self.G = nx.from_pandas_edgelist(self.iliad_dataframe, source='source',
+                                         target='target', edge_attr='value', create_using=nx.Graph())
 
-        pos = nx.kamada_kawai_layout(G)
-        nx.draw(G, with_labels=True, node_color='blue', edge_cmap=plt.cm.Blues, pos=pos)
-        plt.show()
+
+        node_degree = dict(self.G.degree)
+        nx.set_node_attributes(self.G, node_degree, 'size')
+
+        self.net.from_nx(self.G)
+        self.net.show('iliad.html')
+
+        with open('DegreeCentrality.txt', 'w') as f:
+            degree_dict = nx.degree_centrality(self.G)
+            f.write(f"{degree_dict}\n")
+
+    def network_community(self):
+        pass
+
 
     def run(self):
         self.create_df()

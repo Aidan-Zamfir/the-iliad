@@ -26,6 +26,6 @@ class CharacterScraper:
         character_list = filter(None, temp_char_list)
 
         #Need to manually delete a few items (eg: 'the', 'soruce', 'greek', etc)
-        with open("HomericCharacters.txt", "w") as f:
+        with open("text_files/HomericCharacters.txt", "w") as f:
             for i in list(character_list):
                     f.write(f"{i[0]}\n")
