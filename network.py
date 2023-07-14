@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 import networkx as nx
 from pyvis.network import Network
-import community as community_louvian
+import community as community_louvain
 import pandas as pd
 import numpy as np
 import spacy
@@ -10,7 +10,6 @@ import spacy
 NER = spacy.load("en_core_web_sm")
 
 class CreateNetwork:
-
 
     def __init__(self):
         self.book = open("text_files/IliadTranscript.txt").read()
@@ -73,30 +72,40 @@ class CreateNetwork:
         self.iliad_dataframe['value'] = 1
         self.iliad_dataframe = self.iliad_dataframe.groupby(['source', 'target'], sort=False, as_index=False).sum()
 
+
     def network_graph(self):
         """Create a network from df based on degree centrality"""
 
-        self.net = Network(notebook=True, width='1000px', height='700px', bgcolor='#222222', font_color='white')
-        self.net.repulsion()
-        self.G = nx.from_pandas_edgelist(self.iliad_dataframe, source='source',
+        net = Network(notebook=True, width='1000px', height='700px', bgcolor='#222222', font_color='white')
+        net.repulsion()
+        G = nx.from_pandas_edgelist(self.iliad_dataframe, source='source',
                                          target='target', edge_attr='value', create_using=nx.Graph())
 
 
-        node_degree = dict(self.G.degree)
-        nx.set_node_attributes(self.G, node_degree, 'size')
+        node_degree = dict(G.degree)
+        nx.set_node_attributes(G, node_degree, 'size')
 
-        self.net.from_nx(self.G)
-        self.net.show('iliad.html')
+        net.from_nx(G)
+        net.show('iliad.html')
 
-        with open('DegreeCentrality.txt', 'w') as f:
-            degree_dict = nx.degree_centrality(self.G)
-            f.write(f"{degree_dict}\n")
 
-    def network_community(self):
-        pass
+    def community_network(self):
+        """Create a community detection network
+        & visualisation graph"""
 
+        net = Network(notebook=True, width='1000px', height='700px', bgcolor='#222222', font_color='white')
+        net.repulsion()
+        G = nx.from_pandas_edgelist(self.iliad_dataframe, source='source',
+                                    target='target', edge_attr='value', create_using=nx.Graph())
+
+        communities = community_louvain.best_partition(G)
+        nx.set_node_attributes(G, communities, 'group')
+
+        net.from_nx(G)
+        net.show("iliad_communities.html")
 
     def run(self):
         self.create_df()
         self.network()
         self.network_graph()
+        self.community_network()
