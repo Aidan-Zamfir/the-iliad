@@ -16,13 +16,15 @@ def characters():
         characters = CharacterScraper()
 
 def network():
-    y = CreateNetwork()
-    y.create_df()
+    data = CreateNetwork()
+
 
 def main():
     book()
     characters()
+    network()
 
 
 if __name__ == '__main__':
     main()
+
