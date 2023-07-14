@@ -25,14 +25,14 @@ class CreateNetwork:
             self.entity_list = [j.text for j in i.ents]
             sentence_entity_list.append({'sentence': i, 'character': self.entity_list})
 
-        self.sentence_ent_df = pd.DataFrame(sentence_entity_list)
-        # print(self.sentence_ent_df.head(30))
+        sentence_ent_df = pd.DataFrame(sentence_entity_list)
+        self.sentence_dataframe = sentence_ent_df[sentence_ent_df['character'].map(len) > 0]
 
 
     def characters(self):
         """From df, get frequency of individual 'character' entities
         & organize in list by frequency order"""
 
-        x = self.sentence_ent_df['character'].value_counts()
-        characters = [i for i in x]
+        characters = self.sentence_dataframe['character'].value_counts().index.tolist()
         print(characters)
+

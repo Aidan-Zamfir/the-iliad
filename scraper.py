@@ -2,7 +2,6 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 import os
 
-URL = "https://greekmythology.fandom.com/wiki/The_lliad"
 class BookScraper:
 
     def __init__(self):
@@ -12,7 +11,7 @@ class BookScraper:
     def get_transcript(self):
         """Get book transcript"""
 
-        self.driver.get(URL)
+        self.driver.get("https://greekmythology.fandom.com/wiki/The_lliad")
         page = self.driver.find_element(By.XPATH, '//*[@id="mw-content-text"]/div')
         iliad = page.find_elements(By.TAG_NAME, 'p')
 
