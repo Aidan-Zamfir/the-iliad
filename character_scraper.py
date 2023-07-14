@@ -1,12 +1,12 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import re
-import os
 
 class CharacterScraper:
 
     def __init__(self):
         self.driver = webdriver.Chrome()
+        self.get_characters()
 
 
     def get_characters(self):
@@ -25,7 +25,7 @@ class CharacterScraper:
 
         character_list = filter(None, temp_char_list)
 
-        #have to manually delete a few entries (eg: 'the', 'soruce', etc)
+        #Need to manually delete a few items (eg: 'the', 'soruce', 'greek', etc)
         with open("HomericCharacters.txt", "w") as f:
             for i in list(character_list):
                     f.write(f"{i[0]}\n")

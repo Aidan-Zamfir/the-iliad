@@ -17,6 +17,8 @@ class CreateNetwork:
 
     def create_df(self):
         """Create dataframe with sentence and NER characters column"""
+        with open("HomericCharacters.txt") as f:
+            xx = f.read()
 
         sentence_entity_list = []
         self.entity_list = []
@@ -26,13 +28,22 @@ class CreateNetwork:
             sentence_entity_list.append({'sentence': i, 'character': self.entity_list})
 
         sentence_ent_df = pd.DataFrame(sentence_entity_list)
+
+
+        sentence_ent_df['character'] = sentence_ent_df['character'].apply(lambda x: self.filter_names(x, xx))
         self.sentence_dataframe = sentence_ent_df[sentence_ent_df['character'].map(len) > 0]
+        print(self.sentence_dataframe)
 
 
-    def characters(self):
-        """From df, get frequency of individual 'character' entities
-        & organize in list by frequency order"""
 
-        characters = self.sentence_dataframe['character'].value_counts().index.tolist()
-        print(characters)
+    # def characters(self):
+    #     """From df, get frequency of individual 'character' entities
+    #     & organize in list by frequency order"""
+    #
+    #     characters = self.sentence_dataframe['character'].value_counts().index.tolist()
+    #     print(characters)
 
+    def filter_names(self, ent_list, chars):
+        """Filter out non 'main character' entities"""
+
+        return [i for i in ent_list if i in chars]

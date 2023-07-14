@@ -1,19 +1,28 @@
-from scraper import BookScraper
+from book_scraper import BookScraper
 from network import CreateNetwork
-from char_scraper import CharacterScraper
+from character_scraper import CharacterScraper
 import os
 
-# if os.path.isfile("IliadTranscript.txt"):
-#     pass
-# else:
-#     x = BookScraper()
-#     x.get_transcript()
-# if os.path.isfile("HomericCharacters.txt"):
-#     pass
-# else:
-#     z = CharacterScraper()
-#     z.get_characters()
+def book():
+    if os.path.isfile("IliadTranscript.txt"):
+        pass
+    else:
+        book = BookScraper()
 
-y = CreateNetwork()
-y.create_df()
-y.characters()
+def characters():
+    if os.path.isfile("HomericCharacters.txt"):
+        pass
+    else:
+        characters = CharacterScraper()
+
+def network():
+    y = CreateNetwork()
+    y.create_df()
+
+def main():
+    book()
+    characters()
+
+
+if __name__ == '__main__':
+    main()

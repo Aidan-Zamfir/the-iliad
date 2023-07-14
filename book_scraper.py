@@ -1,12 +1,11 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-import os
 
 class BookScraper:
 
     def __init__(self):
         self.driver = webdriver.Chrome()
-
+        self.get_transcript()
 
     def get_transcript(self):
         """Get book transcript"""
